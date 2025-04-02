@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WPE 2024</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            width: 70%; 
+            max-width: 1200px;
+            text-align: center;
+            margin-right: 280px; 
+            margin-top: 80px; /* Adjust for the fixed top bar */
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 200px; 
+            height: auto;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid rgb(0, 0, 0);
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s
+        }
+        button {
+    background-color: #427cd3; 
+    color: white; 
+    cursor: pointer; 
+    transition: background-color 0.3s, transform 0.2s; 
+}
+
+button:hover {
+    background-color: #3d71c0; 
+    transform: scale(1.05); 
+}
+
+button:active {
+    transform: scale(0.95); 
+}
+        h2 {
+            margin-bottom: 20px;
+        }
+        .question-block {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-bottom: 2px solid rgb(0, 0, 0);
+            text-align: left;
+        }
+        #resultado {
+            position: fixed; /* Change to fixed positioning */
+            top: 100px; /* Adjust to avoid overlapping the logo */
+            right: 10px; /* Keep it close to the right border */
+            background-color: white; 
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            z-index: 1000; 
+            font-weight: bold;
+            width: 250px; 
+            text-align: center; 
+        }
+        .dentro {
+            color: green; 
+        }
+        .fora {
+            color: red; 
+        }
+        .hidden{
+            display:none;}
+
+        .top-bar {
+            background: linear-gradient(to right, #3678fd, #ffffff 70%); /* Smooth transition to white */
+            color: white;
+            display: flex;
+            justify-content: space-between; /* Space between title and logo */
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-bottom: 4px solid #003366; /* Add dark blue border at the bottom */
+        }
+        .top-bar .logo {
+            width: 60px; /* Adjust logo size */
+            height: auto;
+            order: 2; /* Move logo to the right */
+            margin-right: 60px; /* Adjust horizontal position in pixels */
+            margin-top: 5px; /* Adjust vertical position in pixels */
+        }
+        .top-bar h2 {
+            margin: 0;
+            font-size: 1.5em;
+            text-align: left; /* Align title to the left */
+            color: #003399; /* Ensure title remains visible */
+            order: 1; /* Move title to the left */
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h2>WPE 2024 - Avaliação dos Projetos</h2>
+        <img src="images/FGV.png" alt="Logo" class="logo">
+    </div>
+    <div class="container">
+        <h2> Instruções de preenchimento:</h2>
+        <h3>Assinalar o formulário conforme aprovação e priorização das iniciativas que foram elaboradas no planejamento estratégico do IDE. A verba total orçada para estas iniciativas em 2025 é de R$ 400 mil.</h3>
+        
+        <!-- Início do formulário -->
+        <form id="formulario" action="https://script.google.com/macros/s/AKfycby1Y3qRYE3eOyGVNViFvwTMFOSxRvWsBzToKZ0OAZoQfndyn4_bBpKT93E7mveJwoMjVw/exec" method="post" onsubmit="return calcularTotal()">
+            <div id="perguntas"></div> <!-- Aqui os campos serão inseridos -->
+            <button type="submit">Enviar</button>
+        </form>
+        
+        <div id="resultado" class="dentro hidden"></div> <!-- Aqui será exibido o resultado da soma -->
+
+        <script>
+            const origens = ["SANTI","DGA", "PCI", "PCI", "PCI", "BH", "COR", "DGA - Raquel", "DGA", "COR","DGA - Raquel", "ASD", "DIGITALIZADOS FGV", "Portaria 60/2024 - Redução de Custos - 2025", "Portaria 60/2024 - Redução de Custos - 2025", "DGA"];
+
+            const projetos = [
+                
+                
+                { nome: "Atividade de simulador com IA: Desenvolvimento de um ambiente para a disciplina de Negociação, utilizando IA para simular uma atividade de negociação entre o aluno e um personagem de inteligência artificial.", custo: 12000 },
+                { nome: "Aplicar ferramentas de IA nos cursos com base no conteúdo dado (Case): Padronizar a aplicação de ferramentas de IA nos cursos com base nos programas. Custo: Timesheet", custo: 0 },
+                { nome: "FGV HighTEx: Publicitar em editorial das redes sociais do IDE experiências de alunos com uso de tecnologia em nossas salas de aulas, evidenciando pro mercado ações já existentes em nossas aulas. Custo: Timesheet", custo: 0 },
+                { nome: "Reposicionamento da marca FGV Educação Executiva: Elaborar uma pesquisa robusta de mercado para pensar em como transformar a imagem da FGV Educação Executiva com um posicionamento de ponta em tecnologia.", custo: 250000 },
+                { nome: "Projeto relacionamento com inscritos: Desenvolver uma régua de relacionamento utilizando automação e inteligência artificial, para manter os candidatos a cursos de educação executiva engajados e motivados durante o período de espera entre a inscrição e o início das aulas. Custo: Timesheet", custo: 0 },
+                { nome: "Formação para jovens executivos: Desenvolver uma formação executiva inovadora e de alta qualidade, que capacite novos executivos a enfrentar os desafios do mercado. O programa visa proporcionar uma experiência de aprendizado personalizada, prática e flexível, promovendo networking e desenvolvimento de habilidades práticas e tecnológicas. Custo: Timesheet", custo: 0 },
+                { nome: "FGV / Disciplinas aplicadas – situação problema de empresas: Estabelecer diretrizes para que as unidades firmem parcerias com empresas de diversos setores para oferecer soluções práticas para problemas específicos por meio de disciplinas aplicadas, proporcionando aos alunos a experiência de aplicar o conhecimento em situações reais do mercado..", custo: 20000 },
+                { nome: "Desenvolvimento de soft skills pelos alunos dos MBAs Presenciais, Blended e Live: Fornecer consultoria especializada aos professores para adaptação de seus planos de aula privilegiando o desenvolvimento de soft skills por meio do conteúdo programático de cada disciplina.​ Piloto no Núcleo SP com dois módulos em duas turmas (6 disciplinas cada).", custo: 20000 },
+                { nome: "Flexibilização de grade de cursos MBA presencial: Flexibilizar e adaptar a grade dos currículos de ênfase ao perfil das localidades por ensalamentos. Piloto com cursos de ênfase na rede conveniada. Custo: Timesheet", custo: 0 },
+                { nome: "RH em Foco: Ouvir diretamente do mercado quais são suas necessidades. Por meio de encontros semestrais com empresas do RJ, SP, BSB, BH E Campinas. ", custo: 20000 },
+                { nome: "Quais são as melhores estratégias para capacitar colaboradores e professores para lidar com as demandas futuras da educação executiva?: Adaptar, reformular e aprimorar a capacitação dos colaboradores e professores da educação executiva, focando em habilidades essenciais, inovação tecnológica, liderança e aprendizado contínuo para enfrentar os desafios futuros.​ RH como Facilitador.", custo: 200000 },
+                { nome: "Realização de Mentoria ou Coaching para Líderes.", custo: 50000 },
+                { nome: "Uso da plataforma E-study plus para integração das capacitações definidas para os colaboradores da educação executiva para personalização e imersão no aprendizado.​ Painel dos gestores com informações sobre desenvolvimento acadêmico da sua equipe. Custo: Timesheet", custo: 0 },
+                { nome: "Aumento do valor agregado do MBA Presencial/Blended: “Gerente de contas” para acompanhamento próximo do aluno para realizar todos os procedimentos internos:​ Acompanhamento do NPS a cada disciplina com retorno rápido.​ Espaço de interação entre alunos da mesma turma ainda antes do início da turma.​ Conteúdo a ser compartilhado com equipes profissionais dos alunos.​ Compartilhamento de fotos (registros) dos encontros nos grupos da turma.​ Badges ao final dos cursos.​ Premiação para alunos destaque da turma.​ Alteração do questionário NPS para avaliar o uso das metodologias ativas pelo professor..", custo: 180000 },
+                { nome: "Como podemos fortalecer o relacionamento com os ex-alunos?: Identificação da necessidade de os ex-alunos reconhecerem valor na marca para engajar-se em programas como o Alumni.​ Propostas para a criação de um programa de fidelidade ou pós-venda que ofereça benefícios tangíveis para os ex-alunos.", custo: 10000 },
+                { nome: "Diversidade em movimento FGV: Mapear a diversidade da comunidade acadêmica, identificando as necessidades pedagógicas e promoção de ações de sensibilização e conscientização sobre a importância da inclusão.", custo: 0 }
+            ];
+
+            const perguntasContainer = document.getElementById('perguntas');
+            
+            projetos.forEach((projeto, i) => {
+                const origem = origens[i];
+                const div = document.createElement('div');
+                div.classList.add('question-block');
+                
+                div.innerHTML = `
+                    
+                    <p><strong>Projeto ${i + 1}:</strong> ${projeto.nome}</p>
+                    <p>Estimativa de Gastos: R$ ${projeto.custo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</p>
+                    <p>Aprovação:</p>
+                    <select name="aprovacao_${i + 1}" onchange="calcularTotal()">
+                        <option value="reprovado">Reprovado</option>
+                        <option value="aprovado">Aprovado</option>
+                    </select>
+                    <p>Prazo de implementação:</p>
+                    <select name="prazo_${i + 1}">
+                        <option value="curto">Curto Prazo</option>
+                        <option value="medio">Médio Prazo</option>
+                        <option value="longo">Longo Prazo</option>
+                    </select>
+                    <p><strong>OBS: ${origem}</strong></p>
+                `;
+                
+                perguntasContainer.appendChild(div);
+            });
+
+            function calcularTotal() {
+                const limite = 400000; // Limite de gastos
+                let total = 0;
+
+                projetos.forEach((projeto, i) => {
+                    const aprovacao = document.querySelector(`select[name="aprovacao_${i + 1}"]`).value;
+                    if (aprovacao === "aprovado") {
+                        total += projeto.custo;
+                    }
+                });
+
+                const resultadoDiv = document.getElementById('resultado');
+                if (total === 0) {
+                    resultadoDiv.classList.add('hidden'); // Hide the calculator when total is 0
+                } else {
+                    resultadoDiv.classList.remove('hidden'); // Show the calculator otherwise
+                    resultadoDiv.innerHTML = `Total de Gastos Aprovados: R$ ${total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}<br>Limite: R$ ${limite.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+                    if (total > limite) {
+                        resultadoDiv.className = 'fora'; // Change to red
+                        resultadoDiv.innerHTML += "<br>Atenção: FORA DO ORÇAMENTO!";
+                    } else {
+                        resultadoDiv.className = 'dentro'; // Change to green
+                        resultadoDiv.innerHTML += "<br>DENTRO DO ORÇAMENTO";
+                    }
+                }
+
+                return true; // Allow form submission
+            }
+        </script>
+    </div>
+</body>
+</html>
